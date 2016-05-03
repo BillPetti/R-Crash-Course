@@ -358,7 +358,7 @@ search()
 
 # this is a csv file stored in one of my GitHub repositories
 
-dat <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/FanGraphs_Leaderboard_Cum_WAR.csv", header = TRUE, na.strings="NA")
+dat <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/FanGraphs_Leaderboard_Cum_WAR.csv", header = TRUE, na.strings="NA")
 
 str(dat) # shows the structure of the object
 
@@ -366,7 +366,7 @@ str(dat) # shows the structure of the object
 # You can avoid this behavior by using the `stringsAsFactors` command
 # Let's try again
 
-dat <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/FanGraphs_Leaderboard_Cum_WAR.csv", header = TRUE, na.strings="NA", stringsAsFactors = FALSE)
+dat <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/FanGraphs_Leaderboard_Cum_WAR.csv", header = TRUE, na.strings="NA", stringsAsFactors = FALSE)
 
 str(dat)
 
@@ -614,8 +614,8 @@ if (!require(dplyr)) {
 
 # To make life easier, there are two files (or tables) to import: lahman_reduced_batting and lahman_player
 
-batting <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/batting_1950.csv", header = TRUE, stringsAsFactors = FALSE)
-player <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/player.csv", header = TRUE, stringsAsFactors = FALSE)
+batting <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/batting_1950.csv", header = TRUE, stringsAsFactors = FALSE)
+player <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/player.csv", header = TRUE, stringsAsFactors = FALSE)
 
 # We can start by doing some basic subsetting using dplyr. You will see in many ways it is quite similar to some of the base R functionality.
 
@@ -936,7 +936,7 @@ write.csv(cross_column_ex, "cross_column.csv")
 
 # Let's use some sample survey data
 
-survey_data <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/survey_sample_data.csv", header = TRUE, stringsAsFactors = FALSE)
+survey_data <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/survey_sample_data.csv", header = TRUE, stringsAsFactors = FALSE)
 str(survey_data)
 
 # there are 116 respondents and 18 questions. The questions are on a 5-point Likert scale, from Strongly Disagree to Strongly Agree
@@ -1041,7 +1041,7 @@ ggplot(group_means, aes(x=mean, y=as.factor(group))) + geom_point() + geom_error
 # R has built-in functionality for running linear regressions witht the simple `lm` function
 # Let's download some new data and see what does a better job predicting the rate at which a pitcher will give up runs in the following season (ERA)
 
-era <- read.csv("https://raw.githubusercontent.com/BillPetti/General-Code-Reference/master/pitchers150IP.csv", header = TRUE, stringsAsFactors = FALSE)
+era <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/pitchers150IP.csv", header = TRUE, stringsAsFactors = FALSE)
 
 # ERA_YR2 is our variable; it is a pitcher's ERA in the following season
 
