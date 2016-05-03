@@ -1408,7 +1408,7 @@ ggplot(survey_data_correlations_melt_r2, aes(Var1, Var2)) +
 
 ### Acknowledgements
 
-# Bob Muenchen for beign kind enough to share the code that he uses when teaching a similar course. It was extremely helpful in setting up the content
+# Bob Muenchen for being kind enough to share the code that he uses when teaching a similar course. It was extremely helpful in setting up the content
 
 # Jared Lander's great book, R for Everyone, was helpful to consult and was used for some of the ggplot2 and statistics examples
 
