@@ -1376,6 +1376,14 @@ ggplot(survey_data_correlations_melt_r2, aes(Var1, Var2)) +
 
 # ggplot2 2.1.0 documentation, http://docs.ggplot2.org/current/
 
+# Hadley Wickham on Twitter, https://twitter.com/hadleywickham
+
+# Jenny Bryan's list of resources, http://www.stat.ubc.ca/~jenny/resources.html
+
+# Jenny Bryan on Twitter: https://twitter.com/JennyBryan
+
+# Chris Albon's R tutorials and code snippets, http://chrisalbon.com/#R_Stats
+
 # Interactive walkthrough of R for beginners: http://tryr.codeschool.com/
 
 # DataCamp course for R beginners: https://www.datacamp.com/courses/free-introduction-to-r
