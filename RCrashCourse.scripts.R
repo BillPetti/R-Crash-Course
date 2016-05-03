@@ -890,6 +890,34 @@ select(airquality, -Day) %>% group_by(Month) %>% summarise_each(funs(mean(., na.
 # 4     8 59.96154 171.8571  8.793548 83.96774
 # 5     9 31.44828 167.4333 10.180000 76.90000
 
+# Another approach would be if the data were melted and you grouped by Month and then the questions
+
+airquality_melt <- melt(airquality, id.vars = "Month") %>% filter(variable != "Day")
+airquality_melt %>% group_by(Month, variable) %>% summarise(mean = mean(value, na.rm = TRUE))
+
+# Month variable       mean
+# (int)   (fctr)      (dbl)
+# 1      5    Ozone  23.615385
+# 2      5  Solar.R 181.296296
+# 3      5     Wind  11.622581
+# 4      5     Temp  65.548387
+# 5      6    Ozone  29.444444
+# 6      6  Solar.R 190.166667
+# 7      6     Wind  10.266667
+# 8      6     Temp  79.100000
+# 9      7    Ozone  59.115385
+# 10     7  Solar.R 216.483871
+# 11     7     Wind   8.941935
+# 12     7     Temp  83.903226
+# 13     8    Ozone  59.961538
+# 14     8  Solar.R 171.857143
+# 15     8     Wind   8.793548
+# 16     8     Temp  83.967742
+# 17     9    Ozone  31.448276
+# 18     9  Solar.R 167.433333
+# 19     9     Wind  10.180000
+# 20     9     Temp  76.900000
+
 # Cross tabulation is also pretty easy in R
 
 # You can run a simple crosstabulation using the `table` function. Let's cross Species by Petal.Width from the iris dataset
