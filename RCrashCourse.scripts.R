@@ -19,12 +19,12 @@
 
 ### What is R?
 
-# R is an object#oriented programming language focused on manipulating and analyzing data
+# R is an object oriented programming language focused on manipulating and analyzing data
 # Everything in R is an object: e.g. datasets, functions, models, plots, etc.
-# 
-# R is open#source
-# Anyone can contribute to the R project, and develop and distribute code to run on the R platform
-# 
+ 
+# R is opensource
+# Anyone can- contribute to the R project, and develop and distribute code to run on the R platform
+ 
 # R has become one of the most popular languages used by statisticians and data scientists
 # There is a massive community that contributes to R
 
@@ -83,19 +83,19 @@ x
 # [1] 1 2 3 4 5 
 
 # or character
- 
+
 firstNames <- c("Shinji", "Aska", "Rey", "Misato")
 firstNames
 # [1] "Shinji" "Aska"   "Rey"    "Misato"
 
 # Once a vector is saved as an object (i.e. variable), you can access different parts of the vector by referencing its indexed position
 # For examnple, if we want the third name in the firstNames vector we run:
-  
+
 firstNames[3]
 # [1] "Rey"
 
 # We can also explore the structure of a vector using the `str()` function:
-  
+
 str(firstNames)
 # chr [1:4] "Shinji" "Aska" "Rey" "Misato"
 
@@ -128,17 +128,17 @@ myList
 # Levels: f m
 
 # You can call specific elements within the list using the list index:
-  
+
 myList[[1]]
 # [1] 1 2 3 4 5
 
 # Or execute functions on specific elements:
-  
+
 str(myList[[2]])
 # chr [1:4] "Shinji" "Aska" "Rey" "Misato"
 
 # You can also reference individual elements from a list using `$`:
-  
+
 myList$x
 # [1] 1 2 3 4 5
 
@@ -148,7 +148,7 @@ str(myList[['firstNames']])
 # chr [1:4] "Shinji" "Aska" "Rey" "Misato"
 
 # Dataframes
-  
+
 # Dataframes are two dimensional objects##think rows and columns##basically, tables of data
 
 # You can manually create dataframes by combining two vectors with the data.frame function
@@ -191,7 +191,7 @@ x
 # In R, functions consist of a function name and arguments. You feed the required arguments into the function and it returns a single value.
 
 # Let's take the `combine` (or `c`) function that you've seen earlier, but I've failed to explain:
-  
+
 # combine the following elements into a vector: 1, 2, 3, 4, 5
 
 x <- c(1, 2, 3, 4, 5)
@@ -210,7 +210,7 @@ x
 # So here's our version of a function for calculating the mean of a vector (and how you write a function, generally):
 
 our.mean <- function(x){
-return(sum(x) / length(x))
+  return(sum(x) / length(x))
 }
 
 # So our function's name is `our.mean`. It takes a vector or set of numbers as its arguments, sums those numbers and then divides that sum by the number of individual numbers returning the mean (average) of the set of numbers
@@ -225,7 +225,7 @@ mean(x)
 # [1] 3
 
 # And here's the mean using the `our.mean()` function:
-  
+
 our.mean(x)
 # [1] 3
 
@@ -237,7 +237,7 @@ mean(x) == our.mean(x)
 # Let's take another look at that function we wrote:
 
 our.mean <- function(x){
-return(sum(x) / length(x))
+  return(sum(x) / length(x))
 }
 
 # The operations that should be applied are placed inside curly brackets `{}`
@@ -247,15 +247,15 @@ return(sum(x) / length(x))
 # Here are some additional examples:
 
 our.mean <- function(x){
-foo <- sum(x) / length(x)
-print(foo)
+  foo <- sum(x) / length(x)
+  print(foo)
 }
 
 # or 
 
 our.mean <- function(x){
-foo <- sum(x) / length(x)
-foo
+  foo <- sum(x) / length(x)
+  foo
 }
 
 # Both return 3 when applied to vector `x`
@@ -264,11 +264,11 @@ foo
 # You can layer in numerous functions and temporary objects. For example, let's say we wanted to summarize a vector in terms of it's mean, median, and standard deviation:
 
 our.summary <- function(x) {
-mean <- mean(x)
-median <- median(x)
-standard_deviation <- sd(x)
-foo <- cbind(mean, median, standard_deviation)
-return(foo)
+  mean <- mean(x)
+  median <- median(x)
+  standard_deviation <- sd(x)
+  foo <- cbind(mean, median, standard_deviation)
+  return(foo)
 }
 
 our.summary(x)
@@ -331,9 +331,9 @@ search()
 # [1] ".GlobalEnv"        "package:reshape2"  "tools:rstudio"     "package:stats"    
 # [5] "package:graphics"  "package:grDevices" "package:utils"     "package:datasets" 
 # [9] "package:methods"   "Autoloads"         "package:base"   
-  
+
 # Here are some of the packages I find most useful, day to day, some of which we will explore:
-  
+
 # `dplyr`: robust functions for manipulating and summarizing tabular data
 # `reshape2`: functions for transforming datasets
 # `ggplot2`: comprehensive data visualization functions
@@ -343,7 +343,7 @@ search()
 # More on packages later, just remember they are awesome
 
 ### Getting data in and out of R
-  
+
 # There are several ways to get your data in and out of R
 # Let's start with getting data in
 # Base R includes a series of `read.` functions that can be used
@@ -431,7 +431,7 @@ ls()
 data()
 
 # Let's load the `iris` dataset and view the first 10 rows:
-  
+
 data(iris)
 head(iris, 3)
 # Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -615,6 +615,7 @@ if (!require(dplyr)) {
 # To make life easier, there are two files (or tables) to import: lahman_reduced_batting and lahman_player
 
 batting <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/batting_1950.csv", header = TRUE, stringsAsFactors = FALSE)
+
 player <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/player.csv", header = TRUE, stringsAsFactors = FALSE)
 
 # We can start by doing some basic subsetting using dplyr. You will see in many ways it is quite similar to some of the base R functionality.
@@ -748,7 +749,7 @@ head(AB_400_names_reduced)
 
 head(airquality)
 str(airquality)
-# 'data.frame':	153 obs. of  6 variables:
+# 'data.frame':  153 obs. of  6 variables:
 #   $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
 # $ Solar.R: int  190 118 149 313 NA NA 299 99 19 194 ...
 # $ Wind   : num  7.4 8 12.6 11.5 14.3 14.9 8.6 13.8 20.1 8.6 ...
@@ -1078,7 +1079,7 @@ era <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/mast
 era_yr2 <- era[,-c(1:2, 16)]
 era_yr2_cor <- as.data.frame(cor(era_yr2))
 data.frame(Metric = row.names(era_yr2_cor), ERA_YR2 = round(era_yr2_cor$ERA_YR2, 3)) %>% mutate(Rsquared = round(ERA_YR2^2,3)) %>% arrange(desc(Rsquared))
-      
+
 era_lm <- lm(ERA_YR2 ~ ., data = era[,-c(1:2, 16)])
 summary(era_lm)
 
@@ -1092,7 +1093,7 @@ summary(era_yr2_lm)
 if(!require("coefplot")){
   install.packages("coefplot")
   require(coefplot)
-  }
+}
 
 coefplot(era_yr2_lm)
 # thick line is +/- one standard error, thin line is +/- two standard errors
@@ -1413,4 +1414,3 @@ ggplot(survey_data_correlations_melt_r2, aes(Var1, Var2)) +
 # Jared Lander's great book, R for Everyone, was helpful to consult and was used for some of the ggplot2 and statistics examples
 
 # Sean Anderson's "An Introduction to reshape2" was used for the introduction to melting and casting data, http://seananderson.ca/2013/10/19/reshape.html
-
