@@ -1,0 +1,2 @@
+"0","dat <- read.csv(""https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/FanGraphs_Leaderboard_Cum_WAR.csv"", "
+"0","                header = TRUE, na.strings=""NA"")"

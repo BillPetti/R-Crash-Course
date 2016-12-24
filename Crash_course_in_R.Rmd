@@ -1,0 +1,1428 @@
+---
+title: "A Crash Course in the R Programming Language"
+author: "Bill Petti"
+date: "Orignally Created May 2016"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# R Script for this Course
+
+An R script that contains all the code below can be found [here](https://github.com/BillPetti/R-Crash-Course/blob/master/RCrashCourse.scripts.R)
+
+# What is R?
+
+R is an object-oriented programming language focused on manipulating and analyzing data. Everything in R is an object: e.g. datasets, functions, models, plots, etc.  
+
+R is also an open source language, meaning anyone can contribute to the R project, and develop and distribute code to run on the R platform
+ 
+R has become one of the most popular languages used by statisticians and data scientists. As a resut, there is a massive community that contributes to R
+
+# R Fundamentals    
+
+## Working Directory
+
+It's always good to check and see where R will be saving your files--that includes data from your current session and any objects that you export from R (we'll walk through that a little later)
+
+To see what the current working directory is set to run `getwd()`.
+
+Note the use of forward slashes ("/") in the path.
+
+If you want to or need to change the default directory you can run `setwd()` and include the path you want. For example:
+
+```{r, eval = FALSE}
+setwd("/whatever/path/you/want")
+```
+
+## Assigning Objects
+
+Objects can be assigned by using the `<-` operator.
+
+```{r}
+foo <- "hello world!"
+foo
+```
+
+Object names should begin with a letter and can contain letters, numbers, underscores, or periods
+
+When naming objects, remember that case matters:
+
+```{r, error=TRUE}
+myvar <- c(1,2,3)
+Myvar
+```
+```{r}
+myvar
+```
+
+## Comments
+
+Any text preceded by a `#` will be treated as a comment by R. That is, R will not try to execute it as code.
+
+```{r, error=TRUE}
+# This is a comment
+# foo2 <- “hello world!”
+foo2
+```
+
+R throws an error because `foo2` has not been assigned as an object in the environment, and that's because we commented out the assignment.
+
+## Data Structures 
+
+### Vectors
+
+A vector in R is sequence of elements of the same type. They can be numeric:
+
+```{r}
+x <- c(1,2,3,4,5)
+x
+```
+
+Or characters/strings:
+ 
+```{r}
+firstNames <- c("Shinji", "Aska", "Rey", "Misato")
+firstNames
+```
+
+Once a vector is saved as an object (i.e. variable), you can access different parts of the vector by referencing its indexed position.
+
+For examnple, if we want the third name in the firstNames vector we run:
+  
+```{r}
+firstNames[3]
+```
+
+We can also explore the structure of a vector using the `str()` function:
+  
+```{r}
+str(firstNames)
+```
+
+### Factors
+
+Categorical variables in R are called "factors". Factors have as many levels as their are unique categories.
+
+```{r}
+# create a vector called 'gender'
+gender <- c("f", "f", "f", "m", "m", "m", "m")
+# transform 'gender' into a factor object
+gender <- factor(gender)
+# examine the structure of 'gender'
+str(gender)
+```
+
+### Lists
+
+A list is a sequence of elements of different types. Below, we combine three vectors, each of a different type, into a single list:
+
+```{r}
+myList <- list(x=x, firstNames=firstNames, gender=gender)
+myList
+```
+
+You can call specific elements within the list using the list index:
+
+```{r}
+myList[[1]]
+```
+
+Or execute functions on specific elements:
+
+```{r}
+str(myList[[2]])
+```
+
+You can also reference individual elements from a list using `$`:
+
+```{r}
+myList$x
+```
+
+Or the name of the element with double branches
+
+```{r}
+str(myList[['firstNames']])
+```
+
+### Data frames
+
+Data frames are two dimensional objects; think rows and columns.
+
+Basically, data frames are tables of data. You can manually create data frames by combining two vectors with the data.frame function
+
+```{r}
+franchise <- c("Mets", "Nationals", "Marlins", "Phillies", "Braves")
+city <- c("New York", "Washington, DC", "Miami", "Philadelphia", "Atlanta")
+teams <- data.frame(franchise, city)
+teams
+```
+
+Data frames are of class `data.frame`
+
+The names of the columns (or variables) are stored as attributes of the data frame and can be called using `names()`:
+
+```{r}
+names(teams)
+```
+
+### Matrix, Matrices
+
+A matrix is similar to a data frame except that all of its values are numeric.
+
+## Functions
+
+Functions are pieces of codewritten to complete a specific, often repeated, task.
+
+For example, if we wanted to find the mean of our `x` vector we could write the following code:
+
+```{r}
+x
+(1+2+3+4+5)/5
+```
+
+But this is inefficient, especially with a vector of any real length and complexity, so let's write a function for it!
+  
+In R, functions consist of a function name and arguments. You feed the required arguments into the function and it returns a single value.
+
+Let's take the `combine` (or `c`) function that you've seen earlier, but I've failed to explain:
+
+```{r}
+#combine the following elements into a vector: 1, 2, 3, 4, 5
+x <- c(1, 2, 3, 4, 5)
+x
+```
+In the example above, `c` is the function name and everything in parenteses `()` are its arguments
+
+Let's go back to our mean example. R does have a base function built in for calculating means, but let's build our own.
+
+To do this, we will make use of some other base R functions:`sum` and `length`.
+
+`sum()` takes whatever values are passed to it in its arguments and sums them.
+
+`length()` returns the length (or count) of values passed to it in its arguments.
+
+So here's our version of a function for calculating the mean of a vector (and how you write a function, generally):
+  
+```{r}
+our.mean <- function(x){
+  return(sum(x) / length(x))
+}
+```
+
+So our function's name is `our.mean`. It takes a vector or set of numbers as its arguments, sums those numbers and then divides that sum by the number of individual numbers returning the mean (average) of the set of numbers.
+
+Let's try it!
+  
+Here's the mean of our `x` vector using R's base `mean()` function:
+  
+```{r}
+x
+mean(x)
+```
+
+And here's the mean using the `our.mean()` function:
+
+```{r}
+our.mean(x)
+```
+
+We can even double check that these values are equivalent
+
+```{r}
+mean(x) == our.mean(x)
+```
+
+Let's take another look at that function we wrote:
+  
+```{r}
+our.mean
+```
+
+The operations that should be applied are placed inside curly brackets `{}`.
+
+Here we also used the `return` function to tell the function what should be returned to the environment after running.
+
+There are other ways to make sure your result is returned to the environment.
+
+Here are some additional examples:
+  
+```{r, eval=FALSE}
+our.mean <- function(x){
+  foo <- sum(x) / length(x)
+  print(foo)
+}
+```
+
+or 
+
+```{r, eval=FALSE}
+our.mean <- function(x){
+  foo <- sum(x) / length(x)
+  foo
+}
+```
+
+Both return 3 when applied to vector `x`
+
+Functions can be very simple, like the `our.mean` function, or complex. You can layer in numerous functions and temporary objects. 
+
+For example, let's say we wanted to summarize a vector in terms of it's mean, median, and standard deviation:
+  
+```{r}
+our.summary <- function(x) {
+  mean <- mean(x)
+  median <- median(x)
+  standard_deviation <- sd(x)
+  foo <- cbind(mean, median, standard_deviation)
+  return(foo)
+}
+
+our.summary(x)
+```
+
+The function takes a vector and returns the three summary statistics we specified in the function. Notice that the function relies on other, pre-existing functions and only returns the outputs of those functions. It does not save the objects assigned inside the function to the global environment. 
+
+Take a look in your Environment pane, or use the function below to see a list of objects currently in your Environment:
+  
+```{r}
+ls()
+```
+
+## Packages
+
+Packages are essentially collections of functions that can be installed and loaded when necessary. 
+
+Anyone can write and distrbute a package, and they greatly expand R's capabilities, and since they are open source R's functionality expands very quickly.
+
+Packages also allow for easy distribution and documentation of useful functions in all areas (data manipulation, modeling, visualiztion, web scraping, etc.).
+
+R Packages are most commonly distributed through [CRAN](https://cran.r-project.org/) or through other outlets, e.g. [GitHub](https://github.com).
+
+Let's use the example of `reshape2` package.
+
+`reshape2` contains very useful functions for transforming datasets, for example from wide to long format and vice-versa
+
+To install the reshape2 package from CRAN, use the `install.packages` function:
+
+```{r, eval=FALSE}
+install.packages("reshape2")
+```
+```{r}
+library(reshape2)
+```
+
+You can see which packages are loaded by using the `search` function:
+
+```{r}
+search()
+```
+
+You can also load packages using `require()`.
+
+Let's first unload reshape2:
+  
+```{r}
+detach("package:reshape2")
+```
+
+Then use `require` and check to see if it loaded:
+  
+```{r}
+require(reshape2)
+
+search()
+```
+
+Here are some of the packages I find most useful, day to day, some of which we will explore:
+  
+* `dplyr`: robust functions for manipulating and summarizing tabular data
+* `reshape2`: functions for transforming datasets
+* `ggplot2`: comprehensive data visualization functions
+* `ggthemes`: add*on for `ggplot2`, providing custom graphic themes
+* `rvest`: flexible web-scraping functions
+
+More on packages later, just remember they are awesome.
+
+# Getting data in and out of R
+
+There are several ways to get your data in and out of R. Let's start with getting data in.
+
+Base R includes a series of `read.` functions that can be used
+
+* For csv files
+```{r, eval=FALSE}
+read.delim("file location", header = TRUE, sep = "\t", 
+           quote = "\"", dec = ".", fill = TRUE, comment.char = "", ...)
+```
+* For other delimited files
+```{r, eval=FALSE}
+read.delim("file location", header = TRUE, sep = "\t", 
+           quote = "\"", dec = ".", fill = TRUE, comment.char = "", ...)
+```
+
+You can also read in data that is stored on a website using the url of the site as the file location:
+
+This is a csv file stored in a GitHub repositories:
+
+```{r}
+dat <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/FanGraphs_Leaderboard_Cum_WAR.csv", 
+                header = TRUE, na.strings="NA")
+```
+
+`str(dat)` will show you the structure of the object
+
+```{r}
+str(dat)
+```
+
+This is a good place to point out that, by default, R will read in any string variables as factors unless you tell it not to. If you look at the Name variable you can see that R has transformed it into a factor. In most cases you may not want that.
+
+You can avoid this behavior by using the `stringsAsFactors` command.
+
+Let's try again:
+  
+```{r}
+dat <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/FanGraphs_Leaderboard_Cum_WAR.csv", 
+                header = TRUE, na.strings="NA", 
+                stringsAsFactors = FALSE)
+
+str(dat)
+```
+
+`head(dat)` shows the first 6 records or rows of the object:
+  
+```{r}
+head(dat)
+```
+
+It is also possible to import specific file types, like excel or spss
+
+For excel files, you can use the `xlsx` package:  
+
+```{r, eval = FALSE}
+require(xlsx)
+df <- read.xlsx("<-name and extension of your file>", sheetIndex = 1)
+```
+
+SPSS files can be loaded with the help of the `foreign` package:  
+
+```{r, eval = FALSE}
+require(foreign)
+df <- read.spss("file", use.value.labels = TRUE, to.data.frame = TRUE)
+```
+
+For SPSS files, if you want the value labels to be imported set the `use.value.labels` argument to `TRUE`; for the actual values, choose `FALSE`.
+
+To export data, you simply use the `write.` series of functions.
+
+```{r}
+# export a data frame as a csv file to your current working directory
+write.csv(dat, "baseball_data.csv", row.names = FALSE)
+# check your working directory for the file
+```
+
+You can also export to a different directory if you need to:
+  
+```{r, eval = FALSE}
+#export a data frame as a csv file to a different directory
+write.csv(dat, "C:/Users/bill_petti/Documents/SomeNewFolder/baseball_data.csv", 
+          row.names = FALSE)
+```
+
+You can also export any object; for example, our summary table can be exported as a csv file :
+
+```{r, eval = FALSE}
+summary.ex <- our.summary(x)
+summary.ex
+## mean median standard_deviation
+## [1,]    3      3           1.581139
+write.csv(summary.ex, "summary.ex.csv", row.names = FALSE)
+```
+
+You can also clean up your work space by removing objects (datasets, functions, etc.) using the `rm()` function.
+
+A good rule of thumb is to remove any vectors that you have merged into data frames. Let's remove the two vectors we used to ceate the `teams` data frame:
+
+```{r}
+rm(city, franchise)
+ls()
+```
+
+You'll notice that you can remove multiple objects at once by separating each with a comma. 
+
+You can remove all objects in your current environment by using the `ls()` function. This is a good idea when starting a new analysis to ensure you don't end up referencing objects with similar names from a previous analysis.
+
+```{r, eval = FALSE}
+rm(list=ls())  
+```
+
+# Manipulating data
+
+Let's walk through some common ways to manipulate data in R. We can use some of the datasets included in the base version. To see what's available, execute `data()`
+
+```{r}
+data()
+```
+
+Let's load the `iris` dataset and view the first 10 rows:
+  
+```{r} 
+data(iris)
+head(iris, 3)
+```
+
+We can access individual variables in a dataset using the `$` notation. For example, say you just wanted to view the Sepal.Length variable from the iris dataset. If you try to call it directory, it won't work:
+
+```{r, error = TRUE}
+head(Sepal.Length, 3)
+```
+
+That's because `Sepal.Length` isn't a separate object; it only lives inside of the object iris.
+
+Now, here's how to access it using the `$` notation:
+
+```{r}
+head(iris$Sepal.Length, 3)
+```
+
+If you want to access more than one variabe at a time you can make your life easier by using the `with` function.
+
+```{r}
+with(iris, head(Sepal.Length, 3))
+```
+
+The first argument in `with` is the data frame you want to reference, then you can identify individual variables simply by their name. 
+
+Here's an example using multiple variables from the iris dataset. Let's say we wanted to see the ratio of sepal length to width:
+  
+```{r}
+with(iris, Sepal.Length / Sepal.Width)
+```
+
+What if we want the length/width ration to be a variable we can access in our dataset? You can assign variables to datasets using the `$` notation:
+
+```{r}
+iris$sepal_length_width_ratio <- with(iris, Sepal.Length / Sepal.Width)
+head(iris)
+```
+If you need to, you can also round values with the `round` function:
+
+```{r}
+iris$sepal_length_width_ratio <- round(iris$sepal_length_width_ratio, 2)
+head(iris)
+```
+
+You can also recode variable using the `ifelse` function.
+
+Let's code each case based on whether they are below, between, or above the 1st and 3rd quartile for sepal_length_width_ratio:
+
+You can get a quick summary of any variable with `summary`:
+
+```{r}
+summary(iris$sepal_length_width_ratio)
+
+iris$ratio_q <- with(iris, 
+     ifelse(sepal_length_width_ratio <= 1.550, 1,
+     ifelse(sepal_length_width_ratio > 1.550 & sepal_length_width_ratio < 2.228, 2, 
+     ifelse(sepal_length_width_ratio >= 2.228, 3, NA))))
+head(iris[,c(6:7)], 10)
+```
+
+### Subsetting Data
+
+There are many ways to subset data in R. Let's start with the `base` functions.
+
+There are three unique species in the iris dataset. We can see unique values for any variable using the `unique` function:
+
+```{r}
+unique(iris$Species)
+```
+
+Let's say we wanted to subset iris and just include cases where the species is virginica. We can use the `subset` function:
+
+```{r}
+sub_virginica <- subset(iris, Species == "virginica")
+head(sub_virginica)
+unique(sub_virginica$Species)
+```
+
+Notice that in R the logical comparison for equals is `==`.
+
+We could also simply exclude all cases where Species == "virginica".
+
+```{r}
+ex_virginica <- subset(iris, Species != "virginica")
+unique(ex_virginica$Species)
+```
+
+We may also want to include more than one condition for the subset. 
+
+Let's subset only those cases where Species == "virginica" and the legnth/width ratio is greater than 2:
+
+```{r}
+sub_virginica2 <- subset(iris, Species != "virginica" & sepal_length_width_ratio >= 2)
+head(sub_virginica2)
+```
+
+You can also select specific variables using the index approach:
+
+```{r}
+head(iris[,c(1,3)])
+```
+
+This returns just the first and third variables in the iris dataset.
+
+You can also select specific cases using the same approach:
+
+```{r}
+iris[c(1:6),]
+```
+
+This will return all variables in the dataset, but only rows one through six.
+
+### The `dplyr` package
+
+While you can get very far with the base functions in R, I find the `dplyr` package to be a go-to tool for data manipulation.
+
+`dplyr` was developed and is maintained by Hadley Wickham, who is currently the Chief Scientist at RStudio and has produced a number of the most prolific and useful R packages.
+
+*Much of the material that follows is borrowed from the in-depth vignette found [here](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html):*
+
+Let's install and load it. This syntax below simply says that if R can't load dplyr then install it first:
+
+```{r}
+if (!require(dplyr)) {
+install.packages(dplyr)
+}
+```
+
+To demonstratae the functionality of the dplyr package I've created a trimmed down version of the Lahman database, which is a publically available dataset of various baseball statistics.
+
+To make life easier, there are two files (or tables) to import: `lahman_reduced_batting` and `lahman_player`:
+
+```{r}
+batting <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/batting_1950.csv", 
+                    header = TRUE, 
+                    stringsAsFactors = FALSE)
+
+player <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/player.csv", 
+                   header = TRUE, 
+                   stringsAsFactors = FALSE)
+```
+
+We can start by doing some basic subsetting using dplyr. You will see in many ways it is quite similar to some of the base R functionality.
+
+We can filter for cases where a player had at least 600 at bats in a season using the `filter` function:
+
+```{r}
+AB_400 <- filter(batting, AB >= 400)
+```
+
+We could also reduce the number of variables by using the `select` function:
+
+```{r}
+AB_400_reduced <- select(AB_400, playerID, yearID, G, AB, HR)
+```
+
+Dplyr also allows you to create new variables using the `mutate` function:
+
+```{r}
+AB_400 <- mutate(AB_400, AB_per_HR = AB/HR)
+head(AB_400$AB_per_HR)
+```
+
+You can use the `arrange` function to sort a data frame by a specific variable:
+
+```{r}
+AB_400 <- arrange(AB_400, desc(HR))
+head(AB_400$HR)
+```
+
+`dplyr` also makes merging and joining differen datasets extremely easy.
+
+Looking at the batting table you'll notice that their is a `playerID` variable, but not the player's actual name. That information is in the player table. Let's look at the variables from that table:
+
+```{r}
+str(player)
+```
+
+This table contains tons of biographical data about every player in the Lahman database. We can join the `AB_400` table with this table, which will include the first and last name of each player among other variables.
+
+We can use a `left_join`, which keeps all the cases from the first table and only matches in data from the second where there are common cases. `playerID` will be our key variable, which is simply the variable we use to match cases across both tables:
+
+```{r}
+AB_400_names <- left_join(AB_400, player, by = "playerID")
+```
+
+Now that the players' names are in the same dataset, let's create a variable with both their first and last names using the `paste` function:
+
+```{r}
+AB_400_names$fullName <- with(AB_400_names, 
+     paste(nameFirst, nameLast))
+head(AB_400_names$fullName)
+```
+
+With `dplyr`, you can perform all standard types of joins, as well as use multiple criteria for the joins.
+
+The variables you use for the join also do not need to have the same name.
+
+Let's remove the object we just created, change the name of the matching variable in the player object, and rejoin:
+
+```{r}
+rm(AB_400_names)
+names(player)[names(player) == "playerID"] <- "ID_number"
+str(player)
+AB_400_names <- left_join(AB_400, player, by = c("playerID" = "ID_number"))
+AB_400_names$fullName <- with(AB_400_names, paste(nameFirst, nameLast))
+head(AB_400_names$fullName)
+```
+
+This is nice, but we probably want the player name as the first column. There are a few ways to rearrange column order in R.
+
+Here are a few examples.
+
+Let's move fullName to the first column using the index approach
+
+```{r}
+AB_400_names_index <- AB_400_names[,c(49, 1:48)]
+head(AB_400_names_index[,c(1:6)])
+rm(AB_400_names_index)
+```
+
+We can also use the select function from `dplyr`:
+
+```{r}
+AB_400_names_index <- select(AB_400_names, fullName, everything())
+head(AB_400_names_index[,c(1:6)])
+```
+
+Notice the use of `everything()`. This allows you to order whatever columns you want by name and then have the rest of the columns remain in their current order.
+
+```{r}
+rm(AB_400_names_index)
+```
+
+### The magic of piping
+
+So far we have focused on discrete lines of code. In many cases you need to combine many lines of code to achieve some objective. But this can be inefficient, introduces more opportunity for error, and can make the code less readable--as well as increasing the number of objects in your environment.
+
+Entering the pipe function, or `%>%`.
+
+`%>%` basically means `then`. Do whatever operation is on the left side of the `%>%`, ***then*** do whatever is one the right using the data from the left.
+
+Here is a basic example. Creat an object that only contains players whose height was less than 5'10" (or 70 inches) and then select only `fullName`, `yearID`, and `HR`:
+
+```{r}
+AB_400_names_reduced <- filter(AB_400_names, height < 70) %>%
+  select(fullName, yearID, HR)
+
+head(AB_400_names_reduced)
+```
+
+You can also expand on this as much as you want. Let's also arrange the data by HR in ascending order:
+
+```{r}
+AB_400_names_reduced <- filter(AB_400_names, height < 70) %>%
+  select(fullName, yearID, HR) %>%
+  arrange(HR)
+
+head(AB_400_names_reduced)
+```
+
+### Reshape Data
+
+Sometimes you need to change the orientation of your dataset. Some datasets are long--few columns, many rows; some datasets are wide--many columns, few rows.
+
+The `reshape2` packge makes these kinds of transformations very easy.
+
+Let's use the built in `airquality` dataset in R:
+
+```{r}
+head(airquality)
+str(airquality)
+```
+
+Let's create a long dataset from airquality:
+
+```{r}
+long <- melt(airquality)
+str(long)
+head(long)
+summary(long)
+```
+
+We have melted the dataset, creating one column that includes each column from the original dataset, and another column that contains each value of the previous variables for each case.
+
+We went from 153 cases with 6 variables to 918 cases with 2 variables.
+
+We can also customize what variables to keep in the melted data. Let's keep `Month` and `Day`:
+
+```{r}
+long <- melt(airquality, id.vars = c("Month", "Day"))
+str(long)
+head(long)
+```
+
+Now the data is melted, but we have multiple rows for each `Month` and `Day` combination--one for each variable.
+
+We can transform the long dataset back to wide using the `dcast` function:
+
+```{r}
+wide <- dcast(long, Month + Day ~ variable, value.var = c("value"))
+head(wide)
+head(airquality)
+```
+
+When we compare the wide dataset to the original airquality dataset the only difference is the order of the variables.
+
+We can also cast long datasets and apply aggregating functions to them. 
+Let's say we want to get the mean for each measure by month in the long dataset:
+
+```{r}
+mean_by_month <- dcast(long, Month ~ variable, value.var = c("value"), fun.aggregate = mean, na.rm = TRUE)
+mean_by_month
+```
+
+There are easier ways to quickly aggregate variables in a dataset than melting, casting, and re-melting though, which brings us to descriptive and summary statistics.
+
+# Basic descriptive and summary statistics
+
+The most basic way to get a summary of the data in an object is through the `summary` function:
+
+```{r}
+summary(airquality)
+```
+
+This gives us the minimum and maximum values for each variable, the 1st and 3rd quartiles, mean, median, and the number of missing values.
+
+But we can do better than this, obviously.
+
+Let's say we want to get other measures, like standard deviation, for each of the variables. We can use dplyr's `summarise_each` function
+
+```{r}
+summarise_each(airquality, funs(sd(., na.rm = TRUE)))
+```
+
+The `.` represents where the table should go for a given function. So, as you pipe the data in to the next step in your code, the position of that data can be fixed by where you place the`.`.
+
+What if we want to get the standard deviation for each variable for each month? dplyr's group_by function makes this very simple.
+
+We can first remove the Day column using `select`, since we really don't want the standard deviation for the day of the month.
+
+```{r}
+select(airquality, -Day) %>% 
+  group_by(Month) %>% 
+  summarise_each(funs(sd(., na.rm = TRUE)))
+```
+
+Or, we can find the mean by month. You will see that the results are identical to what we saw after melting our data with the reshape2 package:
+
+```{r}
+select(airquality, -Day) %>% 
+  group_by(Month) %>% 
+  summarise_each(funs(mean(., na.rm = TRUE)))
+```
+
+Cross tabulation is also pretty easy in R.
+
+You can run a simple crosstabulation using the `table` function. Let's cross `Species` by `Petal.Width` from the `iris` dataset:
+
+```{r}
+with(iris, table(Species, Petal.Width))
+```
+
+We rarely want counts. We can get row or column frequencies by feeding the table result into the `prop.table` function.
+
+If you don't specific a `margin` value it will return the proportion of each cross for the entire dataset. For row frequencies, use `margin` = 1. For column frequencies, use `margin` = 2.
+
+```{r}
+with(iris, table(Species, Petal.Width)) %>% 
+  prop.table() %>%
+  round(., 2)
+
+with(iris, table(Species, Petal.Width)) %>% 
+  prop.table(margin = 1) %>% 
+  round(., 2)
+
+with(iris, table(Species, Petal.Width)) %>% 
+  prop.table(margin = 2) %>% 
+  round(., 2)
+```
+
+It is much easier to view and export crosstabs if you transform them using `as.data.frame.matrix`:
+
+```{r}
+cross_column_ex <- with(iris, table(Species, Petal.Width)) %>%
+  prop.table(margin = 2) %>%
+  round(., 2) %>%
+  as.data.frame.matrix()
+
+write.csv(cross_column_ex, "cross_column.csv")
+```
+
+# Basic statistics and modeling
+
+Let's use some sample survey data:
+
+```{r}
+survey_data <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/survey_sample_data.csv", 
+                        header = TRUE, 
+                        stringsAsFactors = FALSE)
+
+str(survey_data)
+```
+
+There are 116 respondents and 18 questions. The questions are on a 5-point Likert scale, from Strongly Disagree to Strongly Agree
+
+## Correlation
+
+The base function `cor` can be used to find basic correlations between variables. You must specific how `cor` should handle missing values. 
+
+The use argument can take several meanings (see `?cor` for more), but here we will use pairwise.
+
+```{r}
+with(survey_data, cor(Q1, Q2, use = "pairwise.complete.obs"))
+```
+
+We have 18 variables, so if we want to get a bird's eye view of how the variables relate to each other we can create a correlation grid.
+
+```{r}
+survey_data_correlations <- cor(survey_data, use = "pairwise.complete.obs")
+
+survey_data_correlations
+```
+
+But we don't really want to have the respondent column included, so we can exclude and re-run.
+
+```{r}
+survey_data_correlations <- select(survey_data, -resp) %>% 
+  cor(use = "pairwise.complete.obs")
+
+survey_data_correlations
+```
+
+To make it easier to read, we can round each correlation.
+
+```{r}
+survey_data_correlations <- round(survey_data_correlations, 3)
+
+survey_data_correlations
+```
+
+Let's assume that we are very interested in the strength of the correlation between Q5 and Q2. Q18 also has a very strong correlation to Q2 (.587) and to Q5 (.743). We can run a partial correlation to better understand the strength and direction of the relationship between Q5 and Q2 after controlling for Q18. 
+
+Let's install and load the `ppcor` package:
+
+```{r}
+if(!require("ppcor")){
+install.packages("ppcor")
+library(ppcor)
+}
+
+dplyr::select(survey_data, Q5, Q2, Q18) %>%
+  filter(complete.cases(.)) %>%
+  with(., pcor.test(Q2, Q5, Q18))
+```
+
+So, after controlling for Q18 the correlation between Q2 and Q5 drops from .687 to .456. What if we controlled for all of the additional variables?
+
+```{r}
+survey_data %>% 
+  filter(complete.cases(.)) %>%
+  with(., pcor.test(Q2, Q5, .[,c(2, 4, 5, 7:19)]))
+```
+
+## ANOVA
+
+R also has built in functionality for ANOVA.
+
+Let's randomly assign our respondents to 1 of 3 groups. `set.seed` allows you to replicate the same values when using `sample` or any other function that randomly generates numbers:
+
+```{r}
+set.seed(42)
+survey_data$group <- sample(1:3, 116, replace = TRUE)
+with(survey_data, table(group))
+```
+
+First, we check if there are differences between the groups and their response to Q2:
+
+```{r}
+q2_anova <- aov(Q2 ~ as.factor(group), survey_data)
+summary(q2_anova)
+```
+
+The p-value is quite high, so the groups are not different.
+
+However, if they p-value was significant we could use the Tukey Honest Significance Difference method to see which pairs differef from each other:
+
+```{r}
+TukeyHSD(q2_anova, conf.level = .95)
+```
+
+Obvioulsy, none of the pairs will show as significant, but you can see what the output will look like for future analyses.
+
+We could also have plotted the means and their confidence intervals and checked for overlaps (we are skipping ahead a bit to plotting, but oh well...)
+
+```{r}
+group_means <- dplyr::select(survey_data, Q2, group) %>%
+  filter(complete.cases(.)) %>%
+  group_by(group) %>%
+  summarise(mean = mean(Q2), sd = sd(Q2), Length = NROW(Q2), q2frac = qnorm(.975), Lower = mean - q2frac*sd/sqrt(Length), Upper = mean + q2frac*sd/sqrt(Length))
+
+if(!require("ggplot2")){
+install.packages("ggplot2")
+require(ggplot2)
+}
+
+ggplot(group_means, aes(x=mean, y=as.factor(group))) + 
+  geom_point() + 
+  geom_errorbarh(aes(xmin=Lower, xmax=Upper), height = .3)
+```
+
+## Linear Regression
+
+R has built-in functionality for running linear regressions witht the simple `lm` function.
+
+Let's download some new data and see what does a better job predicting the rate at which a pitcher will give up runs in the following season (ERA):
+
+```{r}
+era <- read.csv("https://raw.githubusercontent.com/BillPetti/R-Crash-Course/master/pitchers150IP.csv", 
+                header = TRUE, 
+                stringsAsFactors = FALSE)
+```
+
+`ERA_YR2` is our variable; it is a pitcher's ERA in the following season.
+
+First, let's trim the data and take a look at a correlation grid between each variable and ERA in the following year:
+
+```{r}
+era_yr2 <- era[,-c(1:2, 16)]
+
+era_yr2_cor <- as.data.frame(cor(era_yr2))
+
+data.frame(Metric = row.names(era_yr2_cor), ERA_YR2 = round(era_yr2_cor$ERA_YR2, 3)) %>%
+  mutate(Rsquared = round(ERA_YR2^2,3)) %>%
+  arrange(desc(Rsquared))
+```
+
+Let's run a linear model where `ERA_YR2` is our outcome variable and we use all features in the data set:
+
+```{r}
+era_lm <- lm(ERA_YR2 ~ ., data = era[,-c(1:2, 16)])
+
+summary(era_lm)
+```
+
+You can also limit the predictor variables in the model by adding them to the model formula:
+
+```{r}
+era_yr2_lm <- lm(ERA_YR2 ~ AVG + HR_9 + K_perc + K_minus_BB_perc, data = era_yr2)
+
+summary(era_yr2_lm)
+```
+
+You can call specific parts of the model output directly. For example, if you just wanted the coefficients of the model:  
+
+```{r}
+era_yr2_lm$coefficients
+```
+
+The r and adjusted r squared needs to be called from the `summary()` of the model:  
+
+```{r}
+summary(era_yr2_lm)$adj.r.squared
+```
+
+And you can apply the model to actual data using `predict`:  
+
+```{r}
+era_yr2_lm_predict <- predict(era_yr2_lm, era_yr2)
+
+head(era_yr2_lm_predict)
+```
+
+If you aren't applying to a new model you can just call the fit values from the model itself:  
+
+```{r}
+fit <- era_yr2_lm$fitted.values
+
+head(fit)
+```
+
+We can calculate the accuracy of the model in terms of Mean Absolute Error (MAE) and Mean Absolute Percentage Error (MAPE):  
+
+```{r}
+compare <- data.frame(actual = era_yr2$ERA_YR2, predicted = fit)
+
+compare$diff <- with(compare, predicted - actual)
+
+MAE <- with(compare, mean(abs(diff)))
+
+MAE
+
+MAPE <- with(compare, mean(abs(diff))/mean(actual))
+
+MAPE
+```
+
+How does this compare to just using ERA in Time1 to predict ERA in Time2?  
+
+```{r}
+with(era_yr2, mean(abs(ERA - ERA_YR2)))
+```
+
+
+```{r}
+with(era_yr2, mean(abs(ERA - ERA_YR2))/mean(ERA_YR2))
+```
+
+So our model increases the accuracy of just using ERA alone by about 18%:  
+
+```{r}
+round((0.1521268-.1859152)/.1859152,2)
+```
+
+# Plotting and data visualization  
+
+## Base Plotting  
+
+### Histograms
+
+Creating histograms is extremely easy using the base plot functionality in R:
+
+```{r}
+hist(survey_data$Q2)
+```
+
+You can directly edit the breaks to be used:
+
+```{r}
+hist(survey_data$Q2, main = "Frequency of Responses to Q2", 
+     xlab = "Response Value", 
+     breaks = c(0.0, 1.0, 2.0, 3.0, 4.0, 5.0))
+```
+
+You can also extract the values instead of the histogram:
+
+```{r}
+hist(survey_data$Q2, breaks = c(0.0, 1.0, 2.0, 3.0, 4.0, 5.0), 
+     plot = FALSE)
+```
+
+Compare the `$counts` with a simple cross tab of Q2:
+
+```{r}
+table(survey_data$Q2)
+```
+
+You can also show the density and not the counts for each bin:
+
+```{r}
+hist(survey_data$Q2, main = "Frequency of Responses to Q2", 
+     xlab = "Response Value", 
+     breaks = c(0.0, 1.0, 2.0, 3.0, 4.0, 5.0), 
+     freq = FALSE, 
+     labels = TRUE)
+```
+
+You can further customize a `hist` through a variety of arguments. See `?hist` for an accounting of the additional arguments.
+
+### Basic plots
+
+Ccatter plots are also quite easy to generate:
+
+```{r}
+plot(ERA ~ ERA_YR2, data = era_yr2, main = "ERA, Year 1 to Year 2",
+     xlab = "ERA YR1", 
+     ylab = "ERA YR2")
+```
+
+As are box plots:
+
+```{r}
+boxplot(era_yr2$ERA, main = "ERA", ylab = "ERA")
+```
+
+## `ggplot2`
+
+R has pretty good base plotting options, but the beauty of plotting in R is the `ggplot2` packge from Hadley Wickham (yep, there's that name again).
+
+With `ggplot2`, you are basically building the visual in layers. Plots can be saved as objects and then additional layers added on.
+
+Let's start with a basic scatterplot and use data from the `diamonds` data set:  
+
+```{r}
+ggplot(diamonds, aes(x = carat, y = price)) + 
+  geom_point()
+```
+
+Let's save the base of the plot as an object and then add additional layers one by one:  
+
+```{r}
+p <- ggplot(diamonds, aes(x = carat, y = price))
+p
+```
+
+We can color code each point by the $color variable in the dataset:
+
+```{r}
+p + geom_point(aes(color = color))
+```
+
+We could also adjust the size of each point by the `depth` variable
+
+```{r}
+p + geom_point(aes(color = color, size = depth))
+```  
+
+This is a bit hard to make out, so let's add some transparency to each point using the alpha argument:
+
+```{r}
+p + geom_point(aes(color = color, size = depth, alpha = .3))
+```  
+
+This still looks pretty messy, so let's create separate plots to compare broken out by color. To do this, we can use the facet argument:  
+
+```{r}
+p + geom_point(aes(color = color)) + 
+  facet_wrap(~color)
+```
+
+Facets can also work with two dimensions, and we can place the facets in a grid pattern:  
+
+```{r}
+p + geom_point(aes(color = color)) + 
+  facet_grid(cut ~ clarity)
+```
+
+Faceting also makes it easy to view individual variables at once--for example, density plots for each survey question:
+
+```{r}
+survey_data_melt <- melt(survey_data[,-c(1, 20)])
+
+ggplot(survey_data_melt, aes(value)) + geom_density() + facet_wrap(~variable)
+```
+
+`ggplot2` also makes it easy to add a trend line to a scatter plot using `stat_smooth`:  
+
+```{r}
+p + geom_point() + 
+  stat_smooth()
+```
+
+The grey shaded area is the confidence interval of the smoothed trend.
+
+Here's an example of boxplots in `ggplot2`:  
+
+```{r}
+ggplot(diamonds, aes(y = carat, x = cut)) + 
+  geom_boxplot()
+```  
+
+### Fleshing out a `ggplot` visual
+
+There are many aspects of the plot that you can maipulate and customize in `ggplot`.
+
+Going back to our saved `p` plot, we can add/edit a title, axis labels. The `\n` is a hard return that you can use to create more space between the labels and the plot:
+
+```{r}
+pp <- p + geom_point() + 
+  ggtitle("Diamonds: Carat versus Price\n") + 
+  xlab("\nCarat") + 
+  ylab("Price\n")
+
+pp
+```
+
+Formatting of text is accomplished by altering the theme of the plot.
+
+Let's bold the plot and axis titles and resize both, with the plot title being larger than the axis titles:
+
+```{r}
+ppp <- pp + theme(axis.title = element_text(face = "bold", size = 14),
+                  plot.title = element_text(face = "bold", size = 20))
+
+ppp
+```
+
+You can also remove elements of the plot via the theme() argument.
+
+Let's remove the shading of the plot usign `element_blank()`:
+
+```{r}
+pppp <- ppp + theme(panel.background = element_blank())
+
+pppp
+```
+
+You can also use custom color palettes via a series of `scale_` arguments.
+
+Here we swap out the standard color palette for a palette of greens:
+
+```{r}
+ppppp <- pppp + geom_point(aes(colour = color), size = 3) +
+  scale_color_brewer(palette = "Greens")
+
+ppppp
+```
+
+### `ggplot` Themes
+
+There are some built in variations of the basic theme in ggplot. You can easily swap them just by changing the `theme()` argument:
+
+```{r}
+ppppp + theme_minimal()
+
+ppppp + theme_bw()
+
+ppppp + theme_grey()
+```
+
+If you want, you can create your own palette of colors and use them in a plot as well:
+
+```{r}
+g_palette <- c("#007934", "#61C250", "#595B5C")
+
+ggplot(group_means, aes(factor(group), mean)) + 
+  geom_bar(stat = "identity", aes(fill = factor(group))) +
+  geom_text(aes(label = round(mean,2), vjust = -1)) + 
+  scale_fill_manual(values = g_palette) + 
+  ggtitle("Mean Score by Group\n") + 
+  xlab("\nRespondent Group") +
+  ylim(0,5) +
+  ylab("Mean\n") +
+  theme(axis.title = element_text(face = "bold", size = 14),
+        plot.title = element_text(face = "bold", size = 20),
+        panel.background = element_blank())
+```
+
+## Correlation/R^2 Heatmap
+
+Heatmaps are very useful, especially when looking at correlations across a series of variables in a data set.
+
+Here's some code to create one. 
+
+First, you need to calculate the correlation between all the variables in your data set, then melt the data:
+
+```{r}
+survey_data_correlations_melt <- melt(cor(survey_data_correlations, use = "pairwise.complete.obs"))
+
+survey_data_correlations_melt$value <-
+  round(survey_data_correlations_melt$value, 2)
+```
+
+Then, we plot the data using `geom_tile` and `scale_fill_gradient2` to scale the color of each tile based on its value:
+
+```{r}
+ggplot(survey_data_correlations_melt, aes(Var1, Var2)) + 
+  geom_tile(aes(fill = value)) + 
+  geom_text(aes(label=value), size = 3, fontface = "bold") + 
+  scale_fill_gradient2(low = "#67a9cf", high = "#ef8a62") + 
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        panel.border = element_blank(), 
+        panel.background = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12, face = "bold"))
+```
+
+We should remove all values of 1 to make the heatmapping more intuititve and to display better
+
+```{r}
+survey_data_correlations_melt <- survey_data_correlations_melt %>%
+  filter(value < 1) 
+
+ggplot(survey_data_correlations_melt, aes(Var1, Var2)) + 
+  geom_tile(aes(fill = value)) + 
+  geom_text(aes(label=value), size = 3, fontface = "bold") + 
+  scale_fill_gradient2(low = "#67a9cf", high = "#ef8a62") + 
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        panel.border = element_blank(), 
+        panel.background = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12, face = "bold"))
+```
+
+If the labels are distracting you can remove them:
+
+```{r}
+ggplot(survey_data_correlations_melt, aes(Var1, Var2)) + 
+  geom_tile(aes(fill = value)) + 
+  scale_fill_gradient2(low = "#67a9cf", high = "#ef8a62") + 
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        panel.border = element_blank(), 
+        panel.background = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12, face = "bold"))
+```
+
+We could also plot the R^2 between questions:
+
+```{r}
+survey_data_correlations_melt_r2 <- survey_data_correlations_melt %>%
+  mutate(value = round(value^2, 2))
+
+ggplot(survey_data_correlations_melt_r2, aes(Var1, Var2)) + 
+  geom_tile(aes(fill = value)) + 
+  scale_fill_gradient2(low = "#67a9cf", high = "#ef8a62") + 
+  theme_minimal() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        panel.border = element_blank(), 
+        panel.background = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12, face = "bold"))
+```
+
+# Additional Resources
+
+As mentioned earlier, there are a ton of wonderful resources to help you get up to speed on R. Here are a few of my favorites.
+
+## Websites, etc.
+
+* List of the most useful R commands, Personality Project, http://www.personality-project/r/r.commands.html
+
+* Advanced R, Hadley Wickham, http://adv-r.had.co.nz/
+
+* dplyr vignettes, https://github.com/hadley/dplyr/blob/master/vignettes/introduction.Rmd
+
+* ggplot2 2.1.0 documentation, http://docs.ggplot2.org/current/
+
+* Interactive walkthrough of R for beginners: http://tryr.codeschool.com/
+
+* DataCamp course for R beginners: https://www.datacamp.com/courses/free-introduction-to-r
+
+* Swirl, an R package that walks you through lessons interactively from within R (may want to wait for the R crash course before wading into this if you have zero R experience): http://swirlstats.com/
+
+* Intro to R video playlist from Google: https://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP
+
+* There is also a DataCamp course by Bob Muenchen, the author of R for SAS and SPSS Users. You can start it for free, but at some point you need to pay to advance through (not sure of the price): https://www.datacamp.com/courses/r-for-sas-spss-and-stata-users-r-tutorial
+
+* Twitter hashtag [#rstats](https://twitter.com/hashtag/rstats)
+
+## Books
+
+* R for Everyone, Jared Lander, http://www.amazon.com/Everyone-Advanced-Analytics-Graphics-Addison-Wesley/dp/0321888030
+
+* R Cookbook, Paul Teetor, http://shop.oreilly.com/product/9780596809164.do
+
+* R in a Nutshell, Joseph Adler, http://shop.oreilly.com/product/0636920022008.do
+
+* An Introduction to Statistical Learning, Gareth James, et al, http://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf
+
+# Acknowledgements
+
+* [Bob Muenchen](http://r4stats.com) for beign kind enough to share the code that he uses when teaching a similar course. It was extremely helpful in setting up the content
+
+* Jared Lander's great book, [R for Everyone](https://www.amazon.com/Everyone-Advanced-Analytics-Graphics-Addison-Wesley/dp/0321888030), was helpful to consult and was used for some of the `ggplot2` and statistics examples
+
+* Sean Anderson's "An Introduction to reshape2" was used for the introduction to melting and casting data: http://seananderson.ca/2013/10/19/reshape.html
+
