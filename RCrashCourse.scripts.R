@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ############################
 # A Crash-course in the R Programming Language
 # Bill Petti (billpetti@gmail.com)
