@@ -2,7 +2,15 @@
 title: "A Crash Course in the R Programming Language"
 author: "Bill Petti"
 date: "Orignally Created May 2016"
-output: github_document
+output:
+  pdf_document: 
+    fig_height: 6.5
+    fig_width: 8
+    toc: yes
+  html: default
+  html_document: 
+    keep_md: yes
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
